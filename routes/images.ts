@@ -4,7 +4,7 @@ const router = Router();
 
 // endpoint for fetching images based on search result
 router.get('/', async (req: Request, res: Response) => {
-    const { search, limit = 10, skip = 0 } = req.query;
+    const { search, limit = 10, skip = 0, responseLimit = 3 } = req.query;
     const [tokenizer, model, database] = await ApplicationSingleton.getInstance();
     const aggregationPipeline = [];
     const collection = database.db('image-search').collection('images');
@@ -19,7 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
               "path": "imageEmbeddings",
               "queryVector":queryEmbeddings,
               "numCandidates": 100,
-              "limit": limit
+              "limit": responseLimit
             }
           }, 
           {
